@@ -50,24 +50,16 @@ pickupAvailabilityEmitter.on('change', (product, store, oldStatus, newStatus) =>
   if (oldStatus) {
     let notification = null;
 
-    const now = moment();
-    let when = 'in de komende uren';
-    if (now.hour() >= 20 && now.hour() < 23) {
-      when = 'straks om 23:00';
-    } else if (now.hour() >= 0 && now.hour() < 6) {
-      when = 'straks om 06:00';
-    }
-    
     if (newStatus == PickupAvailabilityEmitter.AVAILABLE) {
       notification = `De ${product} is NU beschikbaar voor ophalen bij Apple Store ${store}!`;
     } else if (oldStatus == PickupAvailabilityEmitter.AVAILABLE && newStatus == PickupAvailabilityEmitter.INELIGIBLE) {
-      notification = `De ${product} is nu helaas niet meer beschikbaar voor ophalen bij Apple Store ${store}, maar waarschijnlijk is deze ${when} wel weer beschikbaar.`;
-    } else if (oldStatus == PickupAvailabilityEmitter.AVAILABLE) {      
+      notification = `De ${product} is nu helaas niet meer beschikbaar voor ophalen bij Apple Store ${store}, maar staat nog wel klaar om binnenkort opnieuw beschikbaar te komen.`;
+    } else if (oldStatus == PickupAvailabilityEmitter.AVAILABLE) {
       notification = `De ${product} is nu helaas niet meer beschikbaar voor ophalen bij Apple Store ${store}.`;
     } else if (oldStatus == PickupAvailabilityEmitter.UNAVAILABLE && newStatus == PickupAvailabilityEmitter.INELIGIBLE) {
-      notification = `De ${product} komt waarschijnlijk ${when} beschikbaar voor ophalen bij Apple Store ${store}.`;
+      notification = `De ${product} staat klaar om binnenkort beschikbaar te komen voor ophalen bij Apple Store ${store}. Meestal gebeurt dit om 06:00 of 23:00.`;
     } else if (oldStatus == PickupAvailabilityEmitter.INELIGIBLE && newStatus == PickupAvailabilityEmitter.UNAVAILABLE) {
-      notification = `Het lijkt erop dat de ${product} waarschijnlijk toch niet meer in de komende uren beschikbaar komt voor ophalen bij Apple Store ${store}.`;
+      notification = `De ${product} staat nu niet meer klaar om binnenkort beschikbaar te komen voor ophalen bij Apple Store ${store}.`;
     }
 
     if (notification) {
